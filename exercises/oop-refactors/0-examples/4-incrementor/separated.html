@@ -1,75 +1,71 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
+  <head>
+    <meta charset="utf8" />
+    <title>example 4: incrementor</title>
+  </head>
 
-<head>
-  <meta charset='utf8'>
-  <title>example 4: incrementor</title>
+  <body>
+    <section id="root"></section>
 
-</head>
+    <script id="data">
+      const state = {
+        current: 0,
+        past: [],
+      };
+    </script>
 
-<body>
+    <script id="handler">
+      const handler = (event) => {
+        debugger;
+        const newCurrentStr = event.target.form.increment.value;
+        const newCurrent = Number(newCurrentStr);
 
-  <section id='root'></section>
+        state.past.push(state.current);
+        state.current += newCurrent;
 
-  <script id='data'>
-    const state = {
-      current: 0,
-      past: []
-    };
-  </script>
+        document.getElementById("display-element").innerHTML = state.current;
+      };
+    </script>
 
-  <script id='handler'>
-    const handler = (event) => {
-      const newCurrentStr = event.target.form.increment.value;
-      const newCurrent = Number(newCurrentStr);
+    <script id="view">
+      const render = (data, handler, id) => {
+        debugger;
+        const displayEl = document.createElement("p");
+        displayEl.innerHTML = data.current;
+        displayEl.id = "display-element";
 
-      state.past.push(state.current);
-      state.current += newCurrent;
+        const buttonEl = document.createElement("input");
+        buttonEl.type = "button";
+        buttonEl.value = "increment by: ";
+        buttonEl.onclick = handler;
 
-      document.getElementById('display-element')
-        .innerHTML = state.current;
-    };
-  </script>
+        const inputEl = document.createElement("input");
+        inputEl.type = "number";
+        inputEl.name = "increment";
+        inputEl.value = "1";
 
-  <script id='view'>
-    const render = (data, handler, id) => {
-      const displayEl = document.createElement('p');
-      displayEl.innerHTML = data.current;
-      displayEl.id = 'display-element';
+        const formEl = document.createElement("form");
+        formEl.appendChild(buttonEl);
+        formEl.appendChild(inputEl);
 
-      const buttonEl = document.createElement('input');
-      buttonEl.type = 'button';
-      buttonEl.value = 'increment by: ';
-      buttonEl.onclick = handler;
+        const container = document.createElement("div");
+        container.id = id;
+        container.className = "exercise";
+        container.appendChild(formEl);
+        container.appendChild(displayEl);
 
-      const inputEl = document.createElement('input');
-      inputEl.type = 'number';
-      inputEl.name = 'increment';
-      inputEl.value = '1';
+        return container;
+      };
+    </script>
 
-      const formEl = document.createElement('form');
-      formEl.appendChild(buttonEl);
-      formEl.appendChild(inputEl);
+    <script id="init">
+      debugger;
+      const titleString = "incrementor";
 
-      const container = document.createElement('div');
-      container.id = id;
-      container.className = 'exercise';
-      container.appendChild(formEl);
-      container.appendChild(displayEl);
+      const appView = render(state, handler, titleString);
 
-      return container;
-    }
-  </script>
-
-  <script id='init'>
-    const titleString = 'incrementor';
-
-    const appView = render(state, handler, titleString);
-
-    document.getElementById('root')
-      .appendChild(appView);
-  </script>
-
-</body>
-
+      document.getElementById("root").appendChild(appView);
+    </script>
+  </body>
 </html>

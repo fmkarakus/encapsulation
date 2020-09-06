@@ -1,73 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>the average - encapsulated</title>
 
-<head>
-  <meta charset='utf-8'>
-  <title>the average - encapsulated</title>
+    <style>
+      .discreet {
+        color: darkgray;
+        font-style: italic;
+      }
 
-  <style>
-    .discreet {
-      color: darkgray;
-      font-style: italic;
-    }
+      .numbers-list {
+        list-style: none;
+      }
 
-    .numbers-list {
-      list-style: none;
-    }
+      .digital {
+        font-family: monospace;
+      }
+    </style>
+  </head>
 
-    .digital {
-      font-family: monospace;
-    }
-  </style>
+  <body>
+    <main id="user interface">
+      <button onclick="console.log(log)">log</button>
+      <hr />
+      <form id="add-number-form" action="#">
+        <input id="number-input" type="number" value="0" />
+        <button>add number to list</button>
+        <br />
+        <button type="button" id="reset-button">reset</button>
+      </form>
+      <br />
+      <br />
+      <div id="average"></div>
+      <hr />
+      <div id="numbers-list"></div>
+    </main>
 
-</head>
+    <script src="../../../app/lib/deep-clone.js"></script>
 
-<body>
-  <main id='user interface'>
-    <button onclick='console.log(log)'>log</button>
-    <hr>
-    <form id="add-number-form" action="#">
-      <input id='number-input' type='number' value='0'>
-      <button>add number to list</button>
-      <br>
-      <button type="button" id='reset-button'>reset</button>
-    </form>
-    <br>
-    <br>
-    <div id='average'></div>
-    <hr>
-    <div id='numbers-list'></div>
-  </main>
+    <script id="app-object">
+      "use strict";
+      const app = {
+        state: {
+          numbers: [],
+          // average: 0
+        },
+        get average() {
+          const arrOfNumbers = this.state.numbers;
+          if (arrOfNumbers.length === 0) {
+            return 0;
+          }
+          const numberOfNumbers = arrOfNumbers.length;
+          const sum = arrOfNumbers.reduce((sum, next) => sum + next);
+          const average = sum / numberOfNumbers;
+          return average;
+        },
+        get number() {
+          return [...this.state.numbers];
+        },
+        addNumber: function (newNumber) {
+          this.state.numbers.push(newNumber);
+        },
+      };
+    </script>
 
-  <script src='../../../app/lib/deep-clone.js'></script>
+    <script id="views">
+      "use strict";
+      const renderNumberList = (arrOfNumbers) => {
+        const ulEl = document.createElement("ul");
+        ulEl.className = "numbers-list";
+        for (let i = 0; i < arrOfNumbers.length; i++) {
+          const liEl = document.createElement("li");
+          liEl.className = "digital";
+          liEl.innerHTML = arrOfNumbers[i];
+          ulEl.appendChild(liEl);
+        }
+        return ulEl;
+      };
+      const renderAverage = (average) => {
+        const pEl = document.createElement("p");
+        pEl.innerHTML = "average: " + average;
+        pEl.className = "discreet";
+        return pEl;
+      };
+    </script>
 
-  <script id='app-object'>
-    'use strict';
-
-
-  </script>
-
-  <script id='views'>
-    'use strict';
-
-
-  </script>
-
-  <script id='handlers'>
-    'use strict';
-
-  </script>
-
-  <script id='init'>
-    'use strict';
-
-  </script>
-
-  <script id='listeners'>
-    'use strict';
+    <script id="handlers">
+      "use strict";
 
 
-  </script>
-</body>
+    </script>
 
+    <script id="init">
+      "use strict";
+
+
+    </script>
+
+    <script id="listeners">
+      "use strict";
+      document
+        .getElementById("add-number-form")
+        .addEventListener("submit", addNumberHandler);
+      document
+        .getElementById("reset-button")
+        .addEventListener("click", resetHandler);
+    </script>
+  </body>
 </html>

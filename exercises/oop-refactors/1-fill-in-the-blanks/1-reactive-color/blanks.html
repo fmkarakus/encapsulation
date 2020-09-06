@@ -1,58 +1,53 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
+  <head>
+    <meta charset="utf8" />
+    <title>fill-in 1: reactive color</title>
 
-<head>
-  <meta charset='utf8'>
-  <title>fill-in 1: reactive color</title>
+    <style>
+      .full-screen {
+        height: 100vh;
+        width: 100vw;
+      }
+    </style>
+  </head>
 
-  <style>
-    .full-screen {
-      height: 100vh;
-      width: 100vw;
-    }
-  </style>
-</head>
+  <body>
+    <section id="root"></section>
 
-<body>
+    <script id="object">
+      const app = {
+        state: {
+          red: 0,
+          blue: 0,
+        },
+        handler: function (element, event) {
+          // debugger;
+          const preRed = Number(event.x);
+          const preBlue = Number(event.y);
+          this.state.red = (preRed / window.innerWidth) * 255;
+          this.state.blue = (preBlue / window.innerHeight) * 255;
+          element.style.backgroundColor = `rgb(${this.state.red}, 0, ${this.state.blue})`;
+        },
+        render: function (id) {
+          // debugger;
+          const container = document.createElement("div");
+          container.id = id;
+          container.onmousemove = this.handler.bind(this, container);
 
-  <section id='root'></section>
+          container.className = "full-screen";
 
-  <script id='object'>
-    const app = {
-      state: {
-        red: 0,
-        blue: 0
-      },
-      handler: function (_, _) {
-        // debugger;
-        const preRed = Number(event.x);
-        const preBlue = Number(event.y);
-        this._._ = (preRed / window.innerWidth) * 255;
-        this._._ = (preBlue / window.innerHeight) * 255;
-        element.style.backgroundColor = `rgb(${_._.red}, 0, ${_._.blue})`;
-      },
-      render: function (_) {
-        // debugger;
-        const container = document.createElement('div');
-        container.id = id;
-        container.onmousemove = this._._(_, container);
+          return container;
+        },
+      };
+    </script>
 
-        container.className = 'full-screen';
+    <script id="init">
+      const titleString = "mouse coordinates";
 
-        return container;
-      },
-    }
-  </script>
+      const appView = app.render(titleString);
 
-  <script id='init'>
-    const titleString = 'mouse coordinates';
-
-    const appView = app.render(titleString);
-
-    document.getElementById('root')
-      .appendChild(appView);
-  </script>
-
-</body>
-
+      document.getElementById("root").appendChild(appView);
+    </script>
+  </body>
 </html>
